@@ -1,13 +1,13 @@
 const { score } = require("./score");
 
-function usage() {
+function errorInFormat() {
   console.error("Expected Format:");
   console.error('  npm run score -- \'[4, 5, "X", 8, 1]\'');
 }
 
 const rawArgs = process.argv.slice(2);
 if (rawArgs.length !== 1) {
-  usage();
+  errorInFormat();
   process.exit(1);
 }
 
