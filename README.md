@@ -44,3 +44,10 @@ npm test
 
 Tests are Jest-based and located in `src/score.test.js` and `src/parseInput.test.js`.
 
+### Some Open Questions That Would Be Discussed With Product:
+
+- How would we handle a "x" (lower case)? (Current behavior only allows upper case "X" and errors out if "x" is in the roll array)
+    - NOTE: Another option could be to assume this is a strike.
+- How would we handle more than the allowed amount of frames in a traditional bowling game? (Current behavior throws an error)
+    - NOTE: Another option could be to cut off as many rolls as it takes to meet the maximum.
+
