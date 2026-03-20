@@ -6,6 +6,11 @@ function score(rolls) {
     throw new Error(message);
   };
 
+  const STRIKE = "X";
+  const SPARE = "/";
+  const MAX_PINS = 9;
+  const MAX_FRAMES = 10;
+
   function isNumericString(s) {
     return typeof s === "string" && /^-?\d+$/.test(s.trim());
   }
@@ -26,12 +31,12 @@ function score(rolls) {
     if (typeof token === "number") {
       if (!Number.isFinite(token)) return { pins: null, invalid: true };
       if (!Number.isInteger(token)) return { pins: null, invalid: true };
-      if (token < 0 || token > 9) return { pins: null, invalid: true };
+      if (token < 0 || token > MAX_PINS) return { pins: null, invalid: true };
       return { pins: token, invalid: false };
     }
     if (typeof token === "string" && isNumericString(token)) {
       const n = Number(token.trim());
-      if (n < 0 || n > 9) return { pins: null, invalid: true };
+      if (n < 0 || n > MAX_PINS) return { pins: null, invalid: true };
       return { pins: n, invalid: false };
     }
     return { pins: null, invalid: true };
@@ -41,9 +46,9 @@ function score(rolls) {
     const r = rolls[i];
     if (r === undefined) return { pins: null, missing: true, invalid: false };
 
-    if (r === "X") return { pins: 10, missing: false, invalid: false };
+    if (r === STRIKE) return { pins: 10, missing: false, invalid: false };
 
-    if (r === "/") {
+    if (r === SPARE) {
       const prevToken = rolls[i - 1];
       const prevPins = numericPinsFromToken(prevToken);
       if (i - 1 < 0) return { pins: null, missing: false, invalid: true };
@@ -56,15 +61,15 @@ function score(rolls) {
     return { pins: n.pins, missing: false, invalid: false };
   }
 
-  for (let frame = 0; frame < 10 && rollIndex < rolls.length; frame++) {
-    const first = rolls[rollIndex];
+  for (let frame = 0; frame < MAX_FRAMES && rollIndex < rolls.length; frame++) {
+    const firstRoll = rolls[rollIndex];
     const isFinalFrame = frame === 9;
 
-    if (first === "/") {
+    if (firstRoll === SPARE) {
       invalid("invalid: spare cannot be the first roll of a frame");
     }
 
-    if (first === "X") {
+    if (firstRoll === STRIKE) {
       const b1 = pinsForRoll(rollIndex + 1);
       const b2 = pinsForRoll(rollIndex + 2);
       if (b1.missing || b2.missing) {
@@ -77,28 +82,28 @@ function score(rolls) {
       rollIndex += isFinalFrame ? 3 : 1;
       continue;
     }
-    const p1 = numericPinsFromToken(first);
+    const p1 = numericPinsFromToken(firstRoll);
     if (p1.invalid) {
-      if (numericTokenOutOfRange(first, 0, 9)) {
+      if (numericTokenOutOfRange(firstRoll, 0, MAX_PINS)) {
         invalid("invalid: pins must be between 0 and 9");
       }
       invalid("invalid: encountered invalid roll token");
     }
 
-    const second = rolls[rollIndex + 1];
-    if (second === undefined) {
+    const secondRoll = rolls[rollIndex + 1];
+    if (secondRoll === undefined) {
       frameScores.push(null);
       break;
     }
 
-    if (second === "X") {
+    if (secondRoll === STRIKE) {
       invalid("invalid: strike cannot be the second roll of a frame");
     }
 
-    if (second === "/") {
+    if (secondRoll === SPARE) {
       const b = pinsForRoll(rollIndex + 2);
 
-      if (p1.invalid || b.invalid) {
+      if (b.invalid) {
         invalid("invalid: spare requires valid rolls");
       }
 
@@ -112,8 +117,8 @@ function score(rolls) {
       continue;
     }
 
-    const p2 = numericPinsFromToken(second);
-    if (p1.invalid || p2.invalid || p1.pins + p2.pins > 10) {
+    const p2 = numericPinsFromToken(secondRoll);
+    if (p2.invalid || p1.pins + p2.pins > 10) {
       invalid("invalid: pins must be between 0 and 9 and sum to <= 10");
     }
 
