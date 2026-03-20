@@ -105,6 +105,12 @@ describe("score", () => {
     expect(score(input)).toEqual(expected);
   });
 
+  it("handles a perfect game (12 strikes in a row)", () => {
+    const input = ["X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"];
+    const expected = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30];
+    expect(score(input)).toEqual(expected);
+  });
+
   it("scores a strike in the final (10th) frame when bonus rolls are present", () => {
     // Frames 1-9 are open frames of 0 + 0.
     // 10th frame is a strike, followed by two bonus rolls (0, 0).
