@@ -1,5 +1,18 @@
 # Bowling
 
+## Prerequisites
+
+- `node` (recommended: Node.js 20+)
+- `npm` (comes with Node.js)
+
+## Setup
+
+Install project dependencies:
+
+```bash
+npm install
+```
+
 ## Run the score function (from the terminal)
 
 The CLI runs the scorer with a single JSON array argument.
