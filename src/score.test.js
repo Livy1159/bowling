@@ -15,7 +15,7 @@ describe("score", () => {
 
   it("handles an odd number of rolls (only numbers)", () => {
     const input = [4, 5, 8, 1, 2];
-    const expected = [9, 9, "nil"];
+    const expected = [9, 9, null];
 
     expect(score(input)).toEqual(expected);
   });
@@ -44,7 +44,7 @@ describe("score", () => {
 
   it("handles spares with 1 roll after", () => {
     const input = [4, 5, 2, "/", 8];
-    const expected = [9, 18, "nil"];
+    const expected = [9, 18, null];
 
     expect(score(input)).toEqual(expected);
   });
@@ -58,21 +58,21 @@ describe("score", () => {
 
   it("handles strikes with 1 roll after", () => {
     const input = [4, 5, "X", 8];
-    const expected = [9, "nil", "nil"];
+    const expected = [9, null, null];
 
     expect(score(input)).toEqual(expected);
   });
 
   it("handles 2 strikes in a row with no rolls after", () => {
     const input = [4, 5, "X", "X"];
-    const expected = [9, "nil", "nil"];
+    const expected = [9, null, null];
 
     expect(score(input)).toEqual(expected);
   });
 
   it("handles 2 strikes in a row with 1 roll after", () => {
     const input = [4, 5, "X", "X", "1"];
-    const expected = [9, 21, "nil", "nil"];
+    const expected = [9, 21, null, null];
 
     expect(score(input)).toEqual(expected);
   });
@@ -86,14 +86,14 @@ describe("score", () => {
 
   it("handles 3 strikes in a row with no rolls after", () => {
     const input = [4, 5, "X", "X", "X"];
-    const expected = [9, 30, "nil", "nil"];
+    const expected = [9, 30, null, null];
 
     expect(score(input)).toEqual(expected);
   });
 
   it("handles 3 strikes in a row with 1 roll after", () => {
     const input = [4, 5, "X", "X", "X", "1"];
-    const expected = [9, 30, 21, "nil", "nil"];
+    const expected = [9, 30, 21, null, null];
 
     expect(score(input)).toEqual(expected);
   });

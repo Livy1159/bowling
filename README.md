@@ -30,7 +30,7 @@ Roll tokens:
 ### Output + errors
 
 `score(rolls)` returns an array of frame results for the frames that can be “started” with the provided tokens:
-- `"nil"` means the frame can’t be fully calculated yet (missing needed rolls for bonuses)
+- `null` means the frame can’t be fully calculated yet (missing needed rolls for bonuses)
 - invalid input throws an error (the CLI prints the error message)
 
 If there are extra roll tokens beyond what’s allowed for 10 frames, the error message is:

@@ -44,13 +44,10 @@ function score(rolls) {
     if (r === "X") return { pins: 10, missing: false, invalid: false };
 
     if (r === "/") {
-      // Spare depends on the previous roll being a numeric value.
       const prevToken = rolls[i - 1];
       const prevPins = numericPinsFromToken(prevToken);
       if (i - 1 < 0) return { pins: null, missing: false, invalid: true };
       if (prevPins.invalid) return { pins: null, missing: false, invalid: true };
-      // If previous was 10, "/" would mean "spare after a strike", which is invalid notation.
-      if (prevPins.pins === 10) return { pins: null, missing: false, invalid: true };
       return { pins: 10 - prevPins.pins, missing: false, invalid: false };
     }
 
@@ -71,7 +68,7 @@ function score(rolls) {
       const b1 = pinsForRoll(rollIndex + 1);
       const b2 = pinsForRoll(rollIndex + 2);
       if (b1.missing || b2.missing) {
-        frameScores.push("nil");
+        frameScores.push(null);
       } else if (b1.invalid || b2.invalid) {
         invalid("invalid: encountered invalid roll token");
       } else {
@@ -80,8 +77,6 @@ function score(rolls) {
       rollIndex += isFinalFrame ? 3 : 1;
       continue;
     }
-
-
     const p1 = numericPinsFromToken(first);
     if (p1.invalid) {
       if (numericTokenOutOfRange(first, 0, 9)) {
@@ -92,7 +87,7 @@ function score(rolls) {
 
     const second = rolls[rollIndex + 1];
     if (second === undefined) {
-      frameScores.push("nil");
+      frameScores.push(null);
       break;
     }
 
@@ -108,7 +103,7 @@ function score(rolls) {
       }
 
       if (b.missing) {
-        frameScores.push("nil");
+        frameScores.push(null);
       } else {
         frameScores.push(10 + b.pins);
       }
